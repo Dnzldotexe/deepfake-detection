@@ -2,7 +2,9 @@ import streamlit as st
 
 
 def main() -> None:
-    st.info("We do not store any user uploaded content in this site. You can verify by clicking the GitHub icon.", icon="ℹ️")
+    st.info("All user uploaded content is cached only for the current session. \
+            Once the session is destroyed i.e. closing the tab or refreshing the page, \
+            the data within will also vanish.", icon="ℹ️")
 
     image = st.Page(
         "media/image.py",
