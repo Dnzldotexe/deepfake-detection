@@ -2,6 +2,8 @@ import streamlit as st
 
 
 def main() -> None:
+    st.info("We do not store any user uploaded content in this site. You can verify by clicking the GitHub icon.", icon="ℹ️")
+
     image = st.Page(
         "media/image.py",
         title="Detect Image",

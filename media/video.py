@@ -1,3 +1,3 @@
 import streamlit as st
 
-st.title("hello")
+st.title("Detect deepfake in Video")
