@@ -6,24 +6,24 @@ def main() -> None:
 
     image = st.Page(
         "media/image.py",
-        title="Detect Image",
+        title="Image",
         icon="🖼️",
         default=True
     )
     audio = st.Page(
         "media/audio.py",
-        title="Detect Audio",
+        title="Audio",
         icon="🔉",
     )
     video = st.Page(
         "media/video.py",
-        title="Detect Video",
+        title="Video",
         icon="📽️",
     )
 
     pg = st.navigation(
         {
-            "Media": [image, audio, video],
+            "Medium": [image, audio, video],
         }
     )
 
