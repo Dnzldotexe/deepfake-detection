@@ -1,6 +1,11 @@
 import streamlit as st
+import toml
 
-st.title("Detect deepfake in Audio")
+
+config = toml.load("config.toml")
+HUGGING_FACE_API_KEY = config["api"]["HUGGING_FACE_API_KEY"]
+
+st.title("Detect deepfake in Image")
 
 if "audio" not in st.session_state:
     st.session_state.audio = None
