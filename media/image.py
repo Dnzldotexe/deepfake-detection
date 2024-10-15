@@ -9,13 +9,15 @@ from transformers import pipeline
 config = toml.load("config.toml")
 HUGGING_FACE_API_KEY = config["api"]["HUGGING_FACE_API_KEY"]
 
-model_id = "dima806/deepfake_vs_real_image_detection"
+model_id = "SivaResearch/Fake_Detection"
 filenames = [
     "config.json",
+    "deepfakeconfig.py",
+    "deepfakemodel.py",
     "model.safetensors",
-    "preprocessor_config.json",
+    "pipeline.py",
     "pytorch_model.bin",
-    "training_args.bin",
+    "requirements.txt",
 ]
 
 for filename in filenames:
@@ -25,7 +27,8 @@ for filename in filenames:
         token=HUGGING_FACE_API_KEY
     )
 
-pipe = pipeline("image-classification", model=model_id, device=-1)
+# pipe = pipeline("image-classification", model=model_id, device=-1, trust_remote_code=True)
+pipe = pipeline(model="not-lain/deepfake", trust_remote_code=True)
 
 
 st.title("Detect deepfake in Image")
@@ -45,4 +48,5 @@ if st.session_state.image:
         temp_path = os.path.join(temp_dir, image_file.name)
         with open(temp_path, "wb") as f:
             f.write(image_file.getvalue())
-        st.write(pipe(temp_path))
+        # st.write(pipe(temp_path))
+        st.write(pipe.predict(temp_path))
