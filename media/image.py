@@ -1,5 +1,7 @@
 import streamlit as st
+import os
 import toml
+import tempfile
 from huggingface_hub import hf_hub_download
 from transformers import pipeline
 
@@ -31,12 +33,16 @@ st.title("Detect deepfake in Image")
 if "image" not in st.session_state:
     st.session_state.image = None
 
-image_file = st.file_uploader("Browse Files", type=["jpeg", "jpg", "png"])
+image_file = st.file_uploader("Browse Files", type=["jpeg", "jpg", "png", "webp"])
 
 if image_file:
     st.session_state.image = image_file
 
 if st.session_state.image:
     st.image(st.session_state.image)
-    st.write(image_file.name)
-    # st.write(pipe(image_file.name))
+
+    with tempfile.TemporaryDirectory() as temp_dir:
+        temp_path = os.path.join(temp_dir, image_file.name)
+        with open(temp_path, "wb") as f:
+            f.write(image_file.getvalue())
+        st.write(pipe(temp_path))
