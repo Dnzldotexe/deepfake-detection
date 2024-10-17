@@ -2,9 +2,8 @@ import streamlit as st
 
 
 def main() -> None:
-    st.info("All user uploaded content is cached only for the current session. \
-            Once the session is destroyed i.e. closing the tab or refreshing the page, \
-            the data within will also vanish.", icon="ℹ️")
+    st.info("All user uploaded content is cached only for the current browser session. \
+            Data will be deleted when the session is destroyed i.e. closing the tab or refreshing the page.", icon="ℹ️")
 
     image = st.Page(
         "media/image.py",

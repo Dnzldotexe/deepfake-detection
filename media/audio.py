@@ -16,14 +16,24 @@ def convert_audio_to_wav(audio_file):
 
 @st.cache_resource
 def load_model(API_KEY: str, option: str):
-    model_id = option
-    filenames = [
-        "config.json",
-        "model.safetensors",
-        "preprocessor_config.json",
-        "training_args.bin",
-    ]
-    pipe = pipeline("audio-classification", model=model_id)
+    if option == "HyperMoon/wav2vec2-base-960h-finetuned-deepfake":
+        model_id = option
+        filenames = [
+            "config.json",
+            "preprocessor_config.json",
+            "pytorch_model.bin",
+            "training_args.bin",
+        ]
+        pipe = pipeline("audio-classification", model=model_id)
+    if option == "MelodyMachine/Deepfake-audio-detection-V2":
+        model_id = option
+        filenames = [
+            "config.json",
+            "model.safetensors",
+            "preprocessor_config.json",
+            "training_args.bin",
+        ]
+        pipe = pipeline("audio-classification", model=model_id)
     for filename in filenames:
         downloaded_model_path = hf_hub_download(
             repo_id=model_id,
@@ -57,6 +67,7 @@ def main() -> None:
     option = st.selectbox(
         "Select Model",
         (
+            "HyperMoon/wav2vec2-base-960h-finetuned-deepfake",
             "MelodyMachine/Deepfake-audio-detection-V2",
         ),
     )
