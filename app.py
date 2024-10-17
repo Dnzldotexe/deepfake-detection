@@ -36,7 +36,7 @@ if __name__ == "__main__":
         page_title="Deepfake Detection",
         page_icon="🤖",
         menu_items={
-            "See Repository": "https://github.com/Dnzldotexe/deepfake-detection/"
+            'Report a bug': "https://github.com/Dnzldotexe/deepfake-detection/"
         }
     )
 
