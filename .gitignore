@@ -171,3 +171,7 @@ deepfake/
 .toml.example
 
 .vscode
+.
+config.toml.example
+
+.toml.example
