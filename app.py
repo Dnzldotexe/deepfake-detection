@@ -34,7 +34,10 @@ def main() -> None:
 if __name__ == "__main__":
     st.set_page_config(
         page_title="Deepfake Detection",
-        page_icon="🤖", 
+        page_icon="🤖",
+        menu_items={
+            "See Repository": "https://github.com/Dnzldotexe/deepfake-detection/"
+        }
     )
 
     main()
