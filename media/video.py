@@ -1,9 +1,7 @@
 import streamlit as st
-import toml
 
 
-config = toml.load("config.toml")
-HUGGING_FACE_API_KEY = config["api"]["HUGGING_FACE_API_KEY"]
+HUGGING_FACE_API_KEY = st.secrets["api"]["HUGGING_FACE_API_KEY"]
 
 st.warning("If you are seeing this, it means that there currently is no model loaded for this medium.", icon="⚠️")
 st.title("Detect deepfake in Video")
