@@ -5,7 +5,8 @@ import toml
 config = toml.load("config.toml")
 HUGGING_FACE_API_KEY = config["api"]["HUGGING_FACE_API_KEY"]
 
-st.title("Detect deepfake in Image")
+st.warning("If you are seeing this, it means that there currently is no model loaded for this medium.", icon="⚠️")
+st.title("Detect deepfake in Video")
 
 if "video" not in st.session_state:
     st.session_state.video = None
@@ -16,4 +17,4 @@ if video_file:
     st.session_state.video = video_file
 
 if st.session_state.video:
-    st.image(st.session_state.video)
+    st.video(st.session_state.video)

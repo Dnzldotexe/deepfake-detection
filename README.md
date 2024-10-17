@@ -23,15 +23,15 @@ pip install -r requirements.txt
 - Powershell: `winget install "FFmpeg (Essentials Build)"`
 - Bash: `sudo apt-get install ffmpeg`
 ```
-##  Adding your config file
+##  Adding your config file in .streamlit/ directory
 ```
-cp config.toml.example config.toml
+cp secrets.toml.example secrets.toml
 ```
 ## Adding your Huggingface API key
 - Create your Huggingface account and go to [Settings > Tokens](https://huggingface.co/settings/tokens)
 - Create a READ type token and give it a name
-- Copy the token and paste it to `config.toml`
-- Your `config.toml` should look like below
+- Copy the token and paste it to `secrets.toml`
+- Your `secrets.toml` should look like below
 ```
 [api]
 HUGGING_FACE_API_KEY = "hf_iloveshrek"

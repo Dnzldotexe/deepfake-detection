@@ -1,15 +1,9 @@
 import streamlit as st
 import os
-import toml
 import tempfile
 from huggingface_hub import hf_hub_download
 from transformers import pipeline
 
-
-def load_api_key() -> str:
-    config = toml.load("config.toml")
-    HUGGING_FACE_API_KEY = config["api"]["HUGGING_FACE_API_KEY"]
-    return HUGGING_FACE_API_KEY
 
 def temp_path(image_file: str) -> str:
     temp_dir = tempfile.mkdtemp()
@@ -107,7 +101,7 @@ def main() -> None:
     image_file = st.file_uploader("Browse Files", type=["jpeg", "jpg", "png", "webp"])
 
     # grab token
-    token = load_api_key()
+    token = st.secrets["api"]["HUGGING_FACE_API_KEY"]
 
     # cache image
     if image_file:

@@ -1,17 +1,10 @@
 import streamlit as st
-import os
-import toml
 import tempfile
 from huggingface_hub import hf_hub_download
 from transformers import pipeline
 import soundfile as sf
 from pydub import AudioSegment
 
-
-def load_api_key() -> str:
-    config = toml.load("config.toml")
-    HUGGING_FACE_API_KEY = config["api"]["HUGGING_FACE_API_KEY"]
-    return HUGGING_FACE_API_KEY
 
 # Convert the audio to a format that soundfile can read (like WAV)
 def convert_audio_to_wav(audio_file):
@@ -72,7 +65,7 @@ def main() -> None:
     audio_file = st.file_uploader("Browse Files", type=["mp3", "m4a", "wav"])
 
     # grab token
-    token = load_api_key()
+    token = st.secrets["api"]["HUGGING_FACE_API_KEY"]
 
     # cache audio
     if audio_file:
