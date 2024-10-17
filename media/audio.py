@@ -67,8 +67,8 @@ def main() -> None:
     option = st.selectbox(
         "Select Model",
         (
-            "HyperMoon/wav2vec2-base-960h-finetuned-deepfake",
             "MelodyMachine/Deepfake-audio-detection-V2",
+            "HyperMoon/wav2vec2-base-960h-finetuned-deepfake",
         ),
     )
     
