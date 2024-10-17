@@ -1,0 +1,13 @@
+## Models Overview
+
+### Not-lain Model
+This model is highly effective when detecting deepfakes involving celebrities. It's optimized for identifying manipulated media in high-profile cases.
+
+### PrithivMLmods/Deep-Fake-Detector-Model and dima806/deepfake_vs_real_image_detection
+This model works well for general deepfake detection, including tampered images. It’s suitable for a wide range of use cases beyond celebrity-focused content.
+
+Links to test Images:
+https://www.kaggle.com/datasets/manjilkarki/deepfake-and-real-images
+
+Links to test Audio:
+https://www.kaggle.com/datasets/birdy654/deep-voice-deepfake-voice-recognition/data
