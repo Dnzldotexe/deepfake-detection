@@ -18,6 +18,11 @@ venv python -m venv deepfake
 ```
 pip install -r requirements.txt
 ```
+## Install ffmpeg for audio detection
+```
+- Powershell: `winget install "FFmpeg (Essentials Build)"`
+- Bash: `sudo apt-get install ffmpeg`
+```
 ##  Adding your config file
 ```
 cp config.toml.example config.toml

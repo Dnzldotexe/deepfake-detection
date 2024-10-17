@@ -5,3 +5,5 @@ tensorflow==2.17.0
 torch==2.4.1
 tf-keras==2.17.0
 transformers==4.45.2
+pydub==0.25.1
+soundfile==0.12.1
