@@ -1,8 +1,7 @@
 streamlit==1.39.0
-toml==0.10.2
 huggingface_hub==0.25.2
 tensorflow==2.17.0
-torch==2.4.1
+torch==2.2.2
 tf-keras==2.17.0
 transformers==4.45.2
 pydub==0.25.1
