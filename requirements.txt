@@ -7,3 +7,6 @@ tf-keras==2.17.0
 transformers==4.45.2
 pydub==0.25.1
 soundfile==0.12.1
+facenet-pytorch==2.6.0
+opencv-python==4.10.0.84
+grad-cam==1.5.4
