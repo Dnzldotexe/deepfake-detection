@@ -89,10 +89,10 @@ def main() -> None:
     option = st.selectbox(
         "Select Model",
         (
-            "SivaResearch/Fake_Detection",
-            "dima806/deepfake_vs_real_image_detection", 
-            "Wvolf/ViT_Deepfake_Detection", 
             "prithivMLmods/Deep-Fake-Detector-Model",
+            "dima806/deepfake_vs_real_image_detection",
+            "Wvolf/ViT_Deepfake_Detection",
+            "SivaResearch/Fake_Detection",
             "not-lain/deepfake",
         ),
     )
