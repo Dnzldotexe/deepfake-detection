@@ -10,11 +10,11 @@ cd deepfake-detection
 ```
 ## Creating a python virtual environment
 ```
-venv python -m venv deepfake
+python -m venv venv
 ```
 ## Activating the virtual environment
-- Powershell: `.\deepfake\Scripts\activate`
-- Bash: `source ./deepfake/bin/activate`
+- Powershell: `.\venv\Scripts\activate`
+- Bash: `source ./venv/bin/activate`
 ## Installing dependencies (this takes time)
 ```
 pip install -r requirements.txt
