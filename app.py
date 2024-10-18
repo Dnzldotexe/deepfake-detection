@@ -35,9 +35,6 @@ if __name__ == "__main__":
     st.set_page_config(
         page_title="Deepfake Detection",
         page_icon="🤖",
-        menu_items={
-            'Report a bug': "https://github.com/Dnzldotexe/deepfake-detection/"
-        }
     )
 
     main()
