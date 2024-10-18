@@ -79,8 +79,6 @@ def main() -> None:
     # page title
     st.title("Detect deepfake in Image")
 
-    st.markdown("### Do you have the skills to beat the models? [Test your skills!](https://www.realornotquiz.com)")
-
     # initialize cache
     if "image" not in st.session_state:
         st.session_state.image = None
@@ -120,5 +118,7 @@ def main() -> None:
         st.write(st.session_state.result)
         st.session_state.image = None
         st.session_state.result = None
+
+    st.markdown("### Do you have the skills to beat the models? [Test your skills!](https://www.realornotquiz.com)")
 
 main()
