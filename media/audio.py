@@ -11,13 +11,12 @@ def convert_audio_to_wav(audio_file):
     # Create a temporary .wav file
     temp_wav = tempfile.NamedTemporaryFile(delete=False, suffix=".wav")
     # If the input is not a .wav, convert it to .wav
-    if st.session_state.audio.name[-3:] != "wav":
+    if audio_file.name[-3:] != "wav":
         audio = AudioSegment.from_file(audio_file)
         audio = audio.set_channels(1)
         audio.export(temp_wav.name, format="wav")
     else:
-        audio = AudioSegment.from_wav(audio_file)
-        audio = audio.set_channels(1)
+        audio = AudioSegment.set_channels(1)
         audio.export(temp_wav.name)
     return temp_wav.name
 
