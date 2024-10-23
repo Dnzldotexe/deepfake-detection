@@ -8,12 +8,13 @@ from pydub import AudioSegment
 
 # Convert the audio to a format that soundfile can read (like WAV)
 def convert_audio_to_wav(audio_file):
-    audio = AudioSegment.from_file(audio_file)  # Automatically detects the format
-    audio = audio.set_channels(1)
     temp_wav = tempfile.NamedTemporaryFile(delete=False, suffix=".wav")
     if audio_file.name[-1] != "v":
+        audio = AudioSegment.from_file(audio_file)  # Automatically detects the format
+        audio = audio.set_channels(1)
         audio.export(temp_wav.name, format="wav")  # Convert to WAV
     else:
+        audio = audio_file.set_channels(1)
         audio.export(temp_wav.name)
     return temp_wav.name  # Return the path to the WAV file
 
