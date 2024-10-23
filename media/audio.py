@@ -1,7 +1,5 @@
 import streamlit as st
-import os
 import tempfile
-import shutil
 from huggingface_hub import hf_hub_download
 from transformers import pipeline
 import soundfile as sf
@@ -12,19 +10,16 @@ from pydub import AudioSegment
 def convert_audio_to_wav(audio_file):
     # Create a temporary .wav file
     temp_wav = tempfile.NamedTemporaryFile(delete=False, suffix=".wav")
-    # Get the file extension of the input
-    file_extension = os.path.splitext(audio_file.name)[1].lower()
-    # If the input file is already a .wav file
-    if file_extension == ".wav":
-        # Copy the original .wav file to the temporary file
-        with open(audio_file.name, 'rb') as f_src, open(temp_wav.name, 'wb') as f_dst:
-            shutil.copyfileobj(f_src, f_dst)
-    else:
-        # Otherwise, convert the file to .wav
+    # If the input is not a .wav, convert it to .wav
+    if audio_file.name[-3:] != "wav":
         audio = AudioSegment.from_file(audio_file)  # Automatically detects the format
-        audio = audio.set_channels(1)  # Convert to mono
-        audio.export(temp_wav.name, format="wav")  # Export as .wav
-    return temp_wav.name  # Return the path to the .wav file
+    else:
+        # If already a .wav, copy it to the temporary file
+        audio = AudioSegment.from_wav(audio_file)  # Load the .wav file directly
+    # Convert the (now .wav) file to mono
+    audio = audio.set_channels(1)
+    audio.export(temp_wav.name, format="wav")  # Overwrite with mono .wav
+    return temp_wav.name
 
 @st.cache_resource
 def load_model(API_KEY: str, option: str):
