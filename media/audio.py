@@ -43,8 +43,9 @@ def load_model(API_KEY: str, option: str):
     return pipe
 
 def display_result(token: str, option: str) -> str:
-    # Convert the audio to WAV before using it
-    wav_path = convert_audio_to_wav(st.session_state.audio)
+    if st.session_state.audio.name[-1] != "v":
+        # Convert the audio to WAV before using it
+        wav_path = convert_audio_to_wav(st.session_state.audio)
     pipe = load_model(token, option)
     # Read the audio data and sample rate using soundfile
     data, samplerate = sf.read(wav_path)  # Read the WAV file into data
