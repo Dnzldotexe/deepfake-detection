@@ -14,25 +14,6 @@ def temp_path(image_file: str) -> str:
 
 @st.cache_resource
 def load_model(API_KEY: str, option: str):
-    if option == "dima806/deepfake_vs_real_image_detection":
-        model_id = option
-        filenames = [
-            "config.json",
-            "model.safetensors",
-            "preprocessor_config.json",
-            "pytorch_model.bin",
-            "training_args.bin",
-        ]
-        pipe = pipeline("image-classification", model=model_id, device=-1)
-    if option == "Wvolf/ViT_Deepfake_Detection":
-        model_id = option
-        filenames = [
-            "config.json",
-            "preprocessor_config.json",
-            "pytorch_model.bin",
-            "training_args.bin",
-        ]
-        pipe = pipeline("image-classification", model=model_id, device=-1)
     if option == "prithivMLmods/Deep-Fake-Detector-Model":
         model_id = option
         filenames = [
@@ -43,7 +24,7 @@ def load_model(API_KEY: str, option: str):
             "training_args.bin",
         ]
         pipe = pipeline("image-classification", model=model_id, device=-1)
-    if option == "not-lain/deepfake" or option == "SivaResearch/Fake_Detection":
+    if option == "not-lain/deepfake":
         model_id = option
         filenames = [
             "config.json",
@@ -55,6 +36,7 @@ def load_model(API_KEY: str, option: str):
             "requirements.txt",
         ]
         pipe = pipeline(model="not-lain/deepfake", trust_remote_code=True)
+    
     for filename in filenames:
         downloaded_model_path = hf_hub_download(
             repo_id=model_id,
@@ -66,7 +48,7 @@ def load_model(API_KEY: str, option: str):
 def display_result(token: str, option: str) -> str:
     path, dir = temp_path(st.session_state.image)
     pipe = load_model(token, option)
-    if option == "not-lain/deepfake" or option == "SivaResearch/Fake_Detection":
+    if option == "not-lain/deepfake":
         result = pipe.predict(path)
         st.session_state.result = result["confidences"]
         return result["confidences"]
@@ -90,9 +72,6 @@ def main() -> None:
         "Select Model",
         (
             "prithivMLmods/Deep-Fake-Detector-Model",
-            "dima806/deepfake_vs_real_image_detection",
-            "Wvolf/ViT_Deepfake_Detection",
-            "SivaResearch/Fake_Detection",
             "not-lain/deepfake",
         ),
     )

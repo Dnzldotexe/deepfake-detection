@@ -18,9 +18,10 @@ def main() -> None:
     )
     video = st.Page(
         "media/video.py",
-        title="Video",
+        title="Video (Coming Soon)",
         icon="📽️",
     )
+
 
     pg = st.navigation(
         {
