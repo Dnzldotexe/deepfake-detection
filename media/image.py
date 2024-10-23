@@ -14,15 +14,6 @@ def temp_path(image_file: str) -> str:
 
 @st.cache_resource
 def load_model(API_KEY: str, option: str):
-    if option == "Wvolf/ViT_Deepfake_Detection":
-        model_id = option
-        filenames = [
-            "config.json",
-            "preprocessor_config.json",
-            "pytorch_model.bin",
-            "training_args.bin",
-        ]
-        pipe = pipeline("image-classification", model=model_id, device=-1)
     if option == "prithivMLmods/Deep-Fake-Detector-Model":
         model_id = option
         filenames = [
@@ -81,7 +72,6 @@ def main() -> None:
         "Select Model",
         (
             "prithivMLmods/Deep-Fake-Detector-Model",
-            "Wvolf/ViT_Deepfake_Detection",
             "not-lain/deepfake",
         ),
     )
