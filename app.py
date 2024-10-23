@@ -16,11 +16,16 @@ def main() -> None:
         title="Audio",
         icon="🔉",
     )
+    video = st.Page(
+        "media/video.py",
+        title="Video (Coming Soon)",
+        icon="📽️",
+    )
 
 
     pg = st.navigation(
         {
-            "Medium": [image, audio],
+            "Medium": [image, audio, video],
         }
     )
 
