@@ -14,7 +14,6 @@ def convert_audio_to_wav(audio_file):
         audio = audio.set_channels(1)
         audio.export(temp_wav.name, format="wav")  # Convert to WAV
     else:
-        audio = audio_file.set_channels(1)
         audio.export(temp_wav.name)
     return temp_wav.name  # Return the path to the WAV file
 
