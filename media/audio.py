@@ -11,7 +11,10 @@ def convert_audio_to_wav(audio_file):
     audio = AudioSegment.from_file(audio_file)  # Automatically detects the format
     audio = audio.set_channels(1)
     temp_wav = tempfile.NamedTemporaryFile(delete=False, suffix=".wav")
-    audio.export(temp_wav.name, format="wav")  # Convert to WAV
+    if audio_file.name[-1] != "v":
+        audio.export(temp_wav.name, format="wav")  # Convert to WAV
+    else:
+        audio.export(temp_wav.name)
     return temp_wav.name  # Return the path to the WAV file
 
 @st.cache_resource
@@ -43,9 +46,8 @@ def load_model(API_KEY: str, option: str):
     return pipe
 
 def display_result(token: str, option: str) -> str:
-    if st.session_state.audio.name[-1] != "v":
-        # Convert the audio to WAV before using it
-        wav_path = convert_audio_to_wav(st.session_state.audio)
+    # Convert the audio to WAV before using it
+    wav_path = convert_audio_to_wav(st.session_state.audio)
     pipe = load_model(token, option)
     # Read the audio data and sample rate using soundfile
     data, samplerate = sf.read(wav_path)  # Read the WAV file into data
