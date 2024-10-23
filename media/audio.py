@@ -12,13 +12,13 @@ def convert_audio_to_wav(audio_file):
     temp_wav = tempfile.NamedTemporaryFile(delete=False, suffix=".wav")
     # If the input is not a .wav, convert it to .wav
     if audio_file.name[-3:] != "wav":
-        audio = AudioSegment.from_file(audio_file)  # Automatically detects the format
+        audio = AudioSegment.from_file(audio_file)
+        audio = audio.set_channels(1)
+        audio.export(temp_wav.name, format="wav")
     else:
-        # If already a .wav, copy it to the temporary file
-        audio = AudioSegment.from_wav(audio_file)  # Load the .wav file directly
-    # Convert the (now .wav) file to mono
-    audio = audio.set_channels(1)
-    audio.export(temp_wav.name, format="wav")  # Overwrite with mono .wav
+        audio = AudioSegment.from_wav(audio_file)
+        audio = audio.set_channels(1)
+        audio.export(temp_wav.name)
     return temp_wav.name
 
 @st.cache_resource
