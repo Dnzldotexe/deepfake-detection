@@ -4,17 +4,16 @@ from huggingface_hub import hf_hub_download
 from transformers import pipeline
 import soundfile as sf
 from pydub import AudioSegment
+from io import BytesIO
 
+st.warning("If you're running this locally, do not run audio files that exceed 1  minute as it may take too much computing power", icon="⚠️")
 
 # Convert the audio to a format that soundfile can read (like WAV)
 def convert_audio_to_wav(audio_file):
-    audio = AudioSegment.from_file(audio_file)  # Automatically detects the format
-    audio = audio.set_channels(1)
+    audio = AudioSegment.from_file(BytesIO(audio_file.read()))  # Read the file from BytesIO
+    audio = audio.set_channels(1)  # Ensure it's mono channel
     temp_wav = tempfile.NamedTemporaryFile(delete=False, suffix=".wav")
-    if audio_file.name[-1] != "v":
-        audio.export(temp_wav.name, format="wav")  # Convert to WAV
-    else:
-        audio.export(temp_wav.name)
+    audio.export(temp_wav.name, format="wav")  # Convert to WAV regardless of original format
     return temp_wav.name  # Return the path to the WAV file
 
 @st.cache_resource
@@ -28,7 +27,7 @@ def load_model(API_KEY: str, option: str):
             "training_args.bin",
         ]
         pipe = pipeline("audio-classification", model=model_id)
-    if option == "MelodyMachine/Deepfake-audio-detection-V2":
+    elif option == "MelodyMachine/Deepfake-audio-detection-V2":
         model_id = option
         filenames = [
             "config.json",
