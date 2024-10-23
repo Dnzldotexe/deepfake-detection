@@ -5,24 +5,42 @@ from huggingface_hub import hf_hub_download
 from transformers import pipeline
 import soundfile as sf
 from pydub import AudioSegment
+import numpy as np
 
-
-# Convert the audio to a format that soundfile can read (like WAV)
 def convert_audio_to_wav(audio_file):
-    # Create a temporary .wav file
-    temp_wav = tempfile.NamedTemporaryFile(delete=False, suffix=".wav")
-    # Check if the input is already a WAV file (case-insensitive)
-    if not audio_file.name.lower().endswith('.wav'):
-        # Convert non-WAV file to WAV
-        audio = AudioSegment.from_file(audio_file)
-    else:
-        # Load existing WAV file
-        audio = AudioSegment.from_wav(audio_file)
-    # Convert to mono
-    audio = audio.set_channels(1)
-    # Export to temporary WAV file
-    audio.export(temp_wav.name, format="wav")
-    return temp_wav.name
+    try:
+        # Create a temporary .wav file
+        temp_wav = tempfile.NamedTemporaryFile(delete=False, suffix=".wav")
+        
+        # Save uploaded file to a temporary location
+        temp_input = tempfile.NamedTemporaryFile(delete=False)
+        temp_input.write(audio_file.read())
+        temp_input.close()
+        
+        # Check if the input is already a WAV file (case-insensitive)
+        if not audio_file.name.lower().endswith('.wav'):
+            # Convert non-WAV file to WAV
+            audio = AudioSegment.from_file(temp_input.name)
+        else:
+            # Load existing WAV file
+            audio = AudioSegment.from_wav(temp_input.name)
+        
+        # Convert to mono and set sample rate to 16000 Hz (common for speech models)
+        audio = audio.set_channels(1).set_frame_rate(16000)
+        
+        # Export to temporary WAV file
+        audio.export(temp_wav.name, format="wav", parameters=["-ar", "16000"])
+        
+        # Clean up the input temporary file
+        os.unlink(temp_input.name)
+        
+        return temp_wav.name
+    except Exception as e:
+        if 'temp_input' in locals():
+            os.unlink(temp_input.name)
+        if 'temp_wav' in locals():
+            os.unlink(temp_wav.name)
+        raise Exception(f"Error converting audio: {str(e)}")
 
 @st.cache_resource
 def load_model(API_KEY: str, option: str):
@@ -34,8 +52,7 @@ def load_model(API_KEY: str, option: str):
             "pytorch_model.bin",
             "training_args.bin",
         ]
-        pipe = pipeline("audio-classification", model=model_id)
-    if option == "MelodyMachine/Deepfake-audio-detection-V2":
+    elif option == "MelodyMachine/Deepfake-audio-detection-V2":
         model_id = option
         filenames = [
             "config.json",
@@ -43,25 +60,42 @@ def load_model(API_KEY: str, option: str):
             "preprocessor_config.json",
             "training_args.bin",
         ]
-        pipe = pipeline("audio-classification", model=model_id)
+    
     for filename in filenames:
         downloaded_model_path = hf_hub_download(
             repo_id=model_id,
             filename=filename,
             token=API_KEY
         )
+    
+    pipe = pipeline("audio-classification", model=model_id)
     return pipe
 
 def display_result(token: str, option: str) -> str:
-    # Convert the audio to WAV before using it
-    wav_path = convert_audio_to_wav(st.session_state.audio)
-    pipe = load_model(token, option)
-    # Read the audio data and sample rate using soundfile
-    data, samplerate = sf.read(wav_path)  # Read the WAV file into data
-    # Run the audio data through the model
-    result = pipe(data)
-    st.session_state.result = result
-    return result
+    try:
+        # Convert the audio to WAV before using it
+        wav_path = convert_audio_to_wav(st.session_state.audio)
+        
+        # Load the model
+        pipe = load_model(token, option)
+        
+        # Read the audio data and sample rate using soundfile
+        data, samplerate = sf.read(wav_path)
+        
+        # Ensure the data is float32
+        data = data.astype(np.float32)
+        
+        # Run the audio data through the model
+        result = pipe({"raw": data, "sampling_rate": samplerate})
+        
+        # Clean up temporary file
+        os.unlink(wav_path)
+        
+        st.session_state.result = result
+        return result
+    except Exception as e:
+        st.error(f"Error processing audio: {str(e)}")
+        return None
 
 def main() -> None:
     # page title
@@ -95,12 +129,14 @@ def main() -> None:
         st.audio(st.session_state.audio)
         # show result
         result = display_result(token, option)
-        st.write(result)
+        if result:
+            st.write(result)
 
     # pull audio from cache
     elif st.session_state.audio:
         st.audio(st.session_state.audio)
-        st.write(st.session_state.result)
+        if st.session_state.result:
+            st.write(st.session_state.result)
         st.session_state.audio = None
         st.session_state.result = None
 
