@@ -1,4 +1,5 @@
 import streamlit as st
+import os
 import tempfile
 from huggingface_hub import hf_hub_download
 from transformers import pipeline
@@ -10,14 +11,17 @@ from pydub import AudioSegment
 def convert_audio_to_wav(audio_file):
     # Create a temporary .wav file
     temp_wav = tempfile.NamedTemporaryFile(delete=False, suffix=".wav")
-    # If the input is not a .wav, convert it to .wav
-    if audio_file.name[-3:] != "wav":
+    # Check if the input is already a WAV file (case-insensitive)
+    if not audio_file.name.lower().endswith('.wav'):
+        # Convert non-WAV file to WAV
         audio = AudioSegment.from_file(audio_file)
-        audio = audio.set_channels(1)
-        audio.export(temp_wav.name, format="wav")
     else:
-        audio = AudioSegment.set_channels(1)
-        audio.export(temp_wav.name)
+        # Load existing WAV file
+        audio = AudioSegment.from_wav(audio_file)
+    # Convert to mono
+    audio = audio.set_channels(1)
+    # Export to temporary WAV file
+    audio.export(temp_wav.name, format="wav")
     return temp_wav.name
 
 @st.cache_resource
